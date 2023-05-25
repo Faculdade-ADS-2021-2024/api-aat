@@ -48,11 +48,8 @@ public class PessoaService {
     }
 
     public void deletePessoa(@NotNull @Positive Long id) {
-         pessoaRepository.findById(id)
-                .map(data -> {
-                    pessoaRepository.deleteById(id);
-                    return true;
-                }).orElseThrow(() -> new RecordNotFoundException(id));   
+        
+        pessoaRepository.delete(pessoaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
     
 }

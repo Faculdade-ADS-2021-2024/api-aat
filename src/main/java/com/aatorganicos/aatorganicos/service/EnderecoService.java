@@ -48,11 +48,8 @@ public class EnderecoService {
     }
 
     public void deleteEndereco( @NotNull @Positive Long id) {
-        enderecoRepository.findById(id)
-                .map(data -> {
-                    enderecoRepository.deleteById(id);
-                    return true;
-                }).orElseThrow(() -> new RecordNotFoundException(id));
+        
+        enderecoRepository.delete(enderecoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
 
     

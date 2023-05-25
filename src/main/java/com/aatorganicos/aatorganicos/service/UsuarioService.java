@@ -45,11 +45,8 @@ public class UsuarioService {
     }
 
     public void deleteUsuario( @NotNull @Positive Long id) {
-        usuarioRepository.findById(id)
-                .map(data -> {
-                    usuarioRepository.deleteById(id);
-                    return true;
-                }).orElseThrow(() -> new RecordNotFoundException(id)); 
+
+        usuarioRepository.delete(usuarioRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
     
 }

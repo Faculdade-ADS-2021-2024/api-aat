@@ -3,7 +3,6 @@ package com.aatorganicos.aatorganicos.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,18 +50,15 @@ public class CategoriaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> atualizaCategoria(@PathVariable @NotNull @Positive Long id, @RequestBody Categoria categoria) {
-        return categoriaService.atualizaCategoria(id, categoria)
-                .map(data -> ResponseEntity.ok().body(data))
-                .orElse(ResponseEntity.notFound().build());
+    public Categoria atualizaCategoria(@PathVariable @NotNull @Positive Long id, @RequestBody Categoria categoria) {
+        return categoriaService.atualizaCategoria(id, categoria);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategoria(@PathVariable @NotNull @Positive Long id) {
-        if(categoriaService.deleteCategoria(id)) {
-            return ResponseEntity.noContent().<Void>build();
-        }
-        return ResponseEntity.notFound().build();
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void deleteCategoria(@PathVariable @NotNull @Positive Long id) {
+
+        categoriaService.deleteCategoria(id);
     }
     
 }

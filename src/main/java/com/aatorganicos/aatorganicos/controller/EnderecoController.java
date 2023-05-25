@@ -3,7 +3,6 @@ package com.aatorganicos.aatorganicos.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,18 +51,15 @@ public class EnderecoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Endereco> atualizaEndereco(@PathVariable @NotNull @Positive Long id, @RequestBody Endereco endereco) {
-        return enderecoService.atualizaEndereco(id, endereco)
-                .map(data -> ResponseEntity.ok().body(data))
-                .orElse(ResponseEntity.notFound().build());
+    public Endereco atualizaEndereco(@PathVariable @NotNull @Positive Long id, @RequestBody Endereco endereco) {
+        return enderecoService.atualizaEndereco(id, endereco);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEndereco(@PathVariable @NotNull @Positive Long id) {
-        if(enderecoService.deleteEndereco(id)) {
-            return ResponseEntity.noContent().<Void>build();
-        }
-        return ResponseEntity.notFound().build();
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void deleteEndereco(@PathVariable @NotNull @Positive Long id) {
+
+        enderecoService.deleteEndereco(id);
     }
 
 }

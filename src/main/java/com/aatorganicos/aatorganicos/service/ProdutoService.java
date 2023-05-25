@@ -46,11 +46,8 @@ public class ProdutoService {
     }
 
     public void deleteProduto(@NotNull @Positive Long id) {
-        produtoRepository.findById(id)
-                .map(data -> {
-                    produtoRepository.deleteById(id);
-                    return true;
-                }).orElseThrow(() -> new RecordNotFoundException(id));
+
+        produtoRepository.delete(produtoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
     
 }

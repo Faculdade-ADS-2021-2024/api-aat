@@ -45,12 +45,8 @@ public class CategoriaService {
     }
 
     public void deleteCategoria(@NotNull @Positive Long id) {
-        categoriaRepository.findById(id)
-                .map(data -> {
-                    categoriaRepository.deleteById(id);
-                    return true;
-                })
-                .orElseThrow(() -> new RecordNotFoundException(id));
+
+        categoriaRepository.delete(categoriaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
 
 
