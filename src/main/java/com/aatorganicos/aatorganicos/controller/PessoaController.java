@@ -40,10 +40,8 @@ public class PessoaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pessoa> pessoaPorId(@PathVariable @NotNull @Positive Long id) {
-        return pessoaService.pessoaPorId(id)
-                .map(data -> ResponseEntity.ok().body(data))
-                .orElse(ResponseEntity.notFound().build());
+    public Pessoa pessoaPorId(@PathVariable @NotNull @Positive Long id) {
+        return pessoaService.pessoaPorId(id);
     }
 
     @PostMapping

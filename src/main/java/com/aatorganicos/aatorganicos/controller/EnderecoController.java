@@ -40,10 +40,8 @@ public class EnderecoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Endereco> enderecoPorId(@PathVariable @NotNull @Positive Long id) {
-        return enderecoService.enderecoPorId(id)
-                .map(data -> ResponseEntity.ok().body(data))
-                .orElse(ResponseEntity.notFound().build());
+    public Endereco enderecoPorId(@PathVariable @NotNull @Positive Long id) {
+        return enderecoService.enderecoPorId(id);
 
     }
 

@@ -40,10 +40,8 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> produtoPorId(@PathVariable @NotNull @Positive Long id) {
-        return produtoService.produtoPorId(id)
-                .map(data -> ResponseEntity.ok().body(data))
-                .orElse(ResponseEntity.notFound().build());
+    public Produto produtoPorId(@PathVariable @NotNull @Positive Long id) {
+        return produtoService.produtoPorId(id);
     }
 
     @PostMapping

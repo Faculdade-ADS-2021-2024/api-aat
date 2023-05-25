@@ -1,11 +1,11 @@
 package com.aatorganicos.aatorganicos.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.aatorganicos.aatorganicos.exception.RecordNotFoundException;
 import com.aatorganicos.aatorganicos.model.Endereco;
 import com.aatorganicos.aatorganicos.repository.IEnderecoRepository;
 
@@ -27,15 +27,15 @@ public class EnderecoService {
         return enderecoRepository.findAll();
     }
 
-    public Optional<Endereco> enderecoPorId(@NotNull @Positive Long id) {
-        return enderecoRepository.findById(id);
+    public Endereco enderecoPorId(@NotNull @Positive Long id) {
+        return enderecoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     public Endereco criarEndereco(@Valid Endereco endereco) {
         return enderecoRepository.save(endereco);
     }
 
-    public Optional<Endereco> atualizaEndereco(@NotNull @Positive Long id, Endereco endereco) {
+    public Endereco atualizaEndereco(@NotNull @Positive Long id, Endereco endereco) {
         return enderecoRepository.findById(id)
                 .map(data -> {
                     data.setBairro(endereco.getBairro());
@@ -44,16 +44,15 @@ public class EnderecoService {
                     data.setComplemento(endereco.getComplemento());
                     data.setLogradouro(endereco.getLogradouro());
                     return enderecoRepository.save(data);
-                });
+                }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public boolean deleteEndereco( @NotNull @Positive Long id) {
-        return enderecoRepository.findById(id)
+    public void deleteEndereco( @NotNull @Positive Long id) {
+        enderecoRepository.findById(id)
                 .map(data -> {
                     enderecoRepository.deleteById(id);
                     return true;
-                })
-                .orElse(false);
+                }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     

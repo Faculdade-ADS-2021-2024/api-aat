@@ -40,10 +40,8 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Categoria> categoriaPorId(@PathVariable @NotNull @Positive Long id) {
-        return categoriaService.categoriaPorId(id)
-                .map(data -> ResponseEntity.ok().body(data))
-                .orElse(ResponseEntity.notFound().build());
+    public Categoria categoriaPorId(@PathVariable @NotNull @Positive Long id) {
+        return categoriaService.categoriaPorId(id);
     }
 
     @PostMapping

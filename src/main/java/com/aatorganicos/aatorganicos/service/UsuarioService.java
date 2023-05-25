@@ -1,11 +1,11 @@
 package com.aatorganicos.aatorganicos.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.aatorganicos.aatorganicos.exception.RecordNotFoundException;
 import com.aatorganicos.aatorganicos.model.Usuario;
 import com.aatorganicos.aatorganicos.repository.IUsuarioRepository;
 
@@ -27,30 +27,29 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
     
-    public Optional<Usuario> usuarioPorId(@NotNull @Positive Long id) {
-        return usuarioRepository.findById(id);
+    public Usuario usuarioPorId(@NotNull @Positive Long id) {
+        return usuarioRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     public Usuario criarUsuario(@Valid Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
 
-    public Optional<Usuario> atualizaUsuario(@NotNull @Positive Long id, Usuario usuario) {
+    public Usuario atualizaUsuario(@NotNull @Positive Long id, Usuario usuario) {
         return usuarioRepository.findById(id)
                 .map(data -> {
                     data.setLogin(usuario.getLogin());
                     data.setSenha(usuario.getSenha());
                     return usuarioRepository.save(data);
-                });
+                }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public boolean deleteUsuario( @NotNull @Positive Long id) {
-        return usuarioRepository.findById(id)
+    public void deleteUsuario( @NotNull @Positive Long id) {
+        usuarioRepository.findById(id)
                 .map(data -> {
                     usuarioRepository.deleteById(id);
                     return true;
-                })
-                .orElse(false);
+                }).orElseThrow(() -> new RecordNotFoundException(id)); 
     }
     
 }

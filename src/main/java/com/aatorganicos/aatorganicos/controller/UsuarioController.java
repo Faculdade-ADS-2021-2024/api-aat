@@ -40,10 +40,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> usuarioPorId(@PathVariable @NotNull @Positive Long id) {
-        return usuarioService.usuarioPorId(id)
-            .map(data -> ResponseEntity.ok().body(data))
-            .orElse(ResponseEntity.notFound().build());
+    public Usuario usuarioPorId(@PathVariable @NotNull @Positive Long id) {
+        return usuarioService.usuarioPorId(id);
     }
 
     @PostMapping

@@ -1,11 +1,11 @@
 package com.aatorganicos.aatorganicos.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.aatorganicos.aatorganicos.exception.RecordNotFoundException;
 import com.aatorganicos.aatorganicos.model.Pessoa;
 import com.aatorganicos.aatorganicos.repository.IPessoaRepository;
 
@@ -27,15 +27,15 @@ public class PessoaService {
         return pessoaRepository.findAll();
     }
 
-    public Optional<Pessoa> pessoaPorId(@NotNull @Positive Long id) {
-        return pessoaRepository.findById(id);
+    public Pessoa pessoaPorId(@NotNull @Positive Long id) {
+        return pessoaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     public Pessoa criarPessoa(@Valid Pessoa pessoa) {
         return pessoaRepository.save(pessoa);
     }
 
-    public Optional<Pessoa> atualizaPessoa(@NotNull @Positive Long id, Pessoa pessoa) {
+    public Pessoa atualizaPessoa(@NotNull @Positive Long id, Pessoa pessoa) {
         return pessoaRepository.findById(id)
                 .map(data -> {
                     data.setCpf(pessoa.getCpf());
@@ -44,16 +44,15 @@ public class PessoaService {
                     data.setNome(pessoa.getNome());
                     data.setSexo(pessoa.getSexo());
                     return pessoaRepository.save(data);
-                });
+                }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public boolean deletePessoa(@NotNull @Positive Long id) {
-        return pessoaRepository.findById(id)
+    public void deletePessoa(@NotNull @Positive Long id) {
+         pessoaRepository.findById(id)
                 .map(data -> {
                     pessoaRepository.deleteById(id);
                     return true;
-                })
-                .orElse(false);
+                }).orElseThrow(() -> new RecordNotFoundException(id));   
     }
     
 }
