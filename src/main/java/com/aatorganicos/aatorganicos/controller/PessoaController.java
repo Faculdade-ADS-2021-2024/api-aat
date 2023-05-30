@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aatorganicos.aatorganicos.model.Pessoa;
+import com.aatorganicos.aatorganicos.dto.PessoaDto;
 import com.aatorganicos.aatorganicos.service.PessoaService;
 
 import jakarta.validation.Valid;
@@ -34,23 +34,23 @@ public class PessoaController {
     }
 
     @GetMapping
-    public @ResponseBody List<Pessoa> pessoa() {
+    public @ResponseBody List<PessoaDto> pessoa() {
         return pessoaService.pessoa();
     }
 
     @GetMapping("/{id}")
-    public Pessoa pessoaPorId(@PathVariable @NotNull @Positive Long id) {
+    public PessoaDto pessoaPorId(@PathVariable @NotNull @Positive Long id) {
         return pessoaService.pessoaPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Pessoa criarPessoa(@RequestBody @Valid Pessoa pessoa) {
+    public PessoaDto criarPessoa(@RequestBody @Valid PessoaDto pessoa) {
         return pessoaService.criarPessoa(pessoa);
     }
 
     @PutMapping("/{id}")
-    public Pessoa atualizaPessoa(@PathVariable @NotNull @Positive Long id, @RequestBody Pessoa pessoa) {
+    public PessoaDto atualizaPessoa(@PathVariable @NotNull @Positive Long id, @RequestBody PessoaDto pessoa) {
         return pessoaService.atualizaPessoa(id, pessoa);
     }
 

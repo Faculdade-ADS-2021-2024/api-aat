@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aatorganicos.aatorganicos.model.Usuario;
+import com.aatorganicos.aatorganicos.dto.UsuarioDto;
 import com.aatorganicos.aatorganicos.service.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -34,23 +34,23 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public @ResponseBody List<Usuario> usuario() {
+    public @ResponseBody List<UsuarioDto> usuario() {
         return usuarioService.usuario();
     }
 
     @GetMapping("/{id}")
-    public Usuario usuarioPorId(@PathVariable @NotNull @Positive Long id) {
+    public UsuarioDto usuarioPorId(@PathVariable @NotNull @Positive Long id) {
         return usuarioService.usuarioPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Usuario criarUsuario(@RequestBody @Valid Usuario usuario) {
+    public UsuarioDto criarUsuario(@RequestBody @Valid UsuarioDto usuario) {
         return usuarioService.criarUsuario(usuario);
     }
 
     @PutMapping("/{id}")
-    public Usuario atualizaUsuario(@PathVariable @NotNull @Positive Long id, @RequestBody Usuario usuario) {
+    public UsuarioDto atualizaUsuario(@PathVariable @NotNull @Positive Long id, @RequestBody UsuarioDto usuario) {
         return usuarioService.atualizaUsuario(id, usuario);
     }
 

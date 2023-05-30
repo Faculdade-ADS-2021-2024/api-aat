@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aatorganicos.aatorganicos.model.Categoria;
+import com.aatorganicos.aatorganicos.dto.CategoriaDto;
 import com.aatorganicos.aatorganicos.service.CategoriaService;
 
 import jakarta.validation.Valid;
@@ -34,23 +34,23 @@ public class CategoriaController {
     }
 
     @GetMapping
-    public @ResponseBody List<Categoria> categoria() {
+    public @ResponseBody List<CategoriaDto> categoria() {
         return categoriaService.categoria();
     }
 
     @GetMapping("/{id}")
-    public Categoria categoriaPorId(@PathVariable @NotNull @Positive Long id) {
+    public CategoriaDto categoriaPorId(@PathVariable @NotNull @Positive Long id) {
         return categoriaService.categoriaPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Categoria criarCategoria(@RequestBody @Valid Categoria categoria) {
+    public CategoriaDto criarCategoria(@RequestBody @Valid CategoriaDto categoria) {
         return categoriaService.criarCategoria(categoria);    
     }
 
     @PutMapping("/{id}")
-    public Categoria atualizaCategoria(@PathVariable @NotNull @Positive Long id, @RequestBody Categoria categoria) {
+    public CategoriaDto atualizaCategoria(@PathVariable @NotNull @Positive Long id, @RequestBody CategoriaDto categoria) {
         return categoriaService.atualizaCategoria(id, categoria);
     }
 

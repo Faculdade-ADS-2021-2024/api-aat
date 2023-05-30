@@ -5,14 +5,17 @@ import java.time.LocalDate;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.aatorganicos.aatorganicos.enums.Sexo;
+import com.aatorganicos.aatorganicos.enums.converters.SexoConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -39,13 +42,12 @@ public class Pessoa {
 
     @NotBlank
     @NotNull
-    @Length(max = 1)
-    @Pattern(regexp = "M|F|O")
     @Column(length = 1, nullable = true)
-    private String Sexo;
+    @Convert(converter = SexoConverter.class)
+    private Sexo sexo;
 
     @Length(max = 15)
     @Column(length = 15, nullable = true)
-    private Number Cpf;
+    private Number CPF;
 
 }

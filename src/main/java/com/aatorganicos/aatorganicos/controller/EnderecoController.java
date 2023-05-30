@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aatorganicos.aatorganicos.model.Endereco;
+import com.aatorganicos.aatorganicos.dto.EnderecoDto;
 import com.aatorganicos.aatorganicos.service.EnderecoService;
 
 import jakarta.validation.Valid;
@@ -34,24 +34,24 @@ public class EnderecoController {
     }
 
     @GetMapping
-    public @ResponseBody List<Endereco> endereco() {
+    public @ResponseBody List<EnderecoDto> endereco() {
         return enderecoService.endereco();
     }
 
     @GetMapping("/{id}")
-    public Endereco enderecoPorId(@PathVariable @NotNull @Positive Long id) {
+    public EnderecoDto enderecoPorId(@PathVariable @NotNull @Positive Long id) {
         return enderecoService.enderecoPorId(id);
 
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Endereco criarEndereco(@RequestBody @Valid Endereco endereco) {
+    public EnderecoDto criarEndereco(@RequestBody @Valid EnderecoDto endereco) {
         return enderecoService.criarEndereco(endereco);
     }
 
     @PutMapping("/{id}")
-    public Endereco atualizaEndereco(@PathVariable @NotNull @Positive Long id, @RequestBody Endereco endereco) {
+    public EnderecoDto atualizaEndereco(@PathVariable @NotNull @Positive Long id, @RequestBody EnderecoDto endereco) {
         return enderecoService.atualizaEndereco(id, endereco);
     }
 

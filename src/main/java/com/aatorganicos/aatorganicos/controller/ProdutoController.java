@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aatorganicos.aatorganicos.model.Produto;
+import com.aatorganicos.aatorganicos.dto.ProdutoDto;
 import com.aatorganicos.aatorganicos.service.ProdutoService;
 
 import jakarta.validation.Valid;
@@ -34,23 +34,23 @@ public class ProdutoController {
     }
 
     @GetMapping
-    public @ResponseBody List<Produto> produto() {
+    public @ResponseBody List<ProdutoDto> produto() {
         return produtoService.produto();
     }
 
     @GetMapping("/{id}")
-    public Produto produtoPorId(@PathVariable @NotNull @Positive Long id) {
+    public ProdutoDto produtoPorId(@PathVariable @NotNull @Positive Long id) {
         return produtoService.produtoPorId(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Produto criarProduto(@RequestBody @Valid Produto produto) {
+    public ProdutoDto criarProduto(@RequestBody @Valid ProdutoDto produto) {
         return produtoService.criarProduto(produto);
     }
 
     @PutMapping("/{id}")
-    public Produto atualizaProduto(@PathVariable @NotNull @Positive Long id, @RequestBody Produto produto) {
+    public ProdutoDto atualizaProduto(@PathVariable @NotNull @Positive Long id, @RequestBody ProdutoDto produto) {
         return produtoService.atualizaProduto(id, produto);
     }
 

@@ -1,12 +1,14 @@
 package com.aatorganicos.aatorganicos.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.aatorganicos.aatorganicos.dto.ProdutoDto;
+import com.aatorganicos.aatorganicos.dto.mapper.ProdutoMapper;
 import com.aatorganicos.aatorganicos.exception.RecordNotFoundException;
-import com.aatorganicos.aatorganicos.model.Produto;
 import com.aatorganicos.aatorganicos.repository.IProdutoRepository;
 
 import jakarta.validation.Valid;
@@ -18,30 +20,36 @@ import jakarta.validation.constraints.Positive;
 public class ProdutoService {
     
     private final IProdutoRepository produtoRepository;
+    private final ProdutoMapper produtoMapper;
 
-    public ProdutoService(IProdutoRepository produtoRepository) {
+    public ProdutoService(IProdutoRepository produtoRepository, ProdutoMapper produtoMapper) {
         this.produtoRepository = produtoRepository;
+        this.produtoMapper = produtoMapper;
     }
 
-    public List<Produto> produto() {
-        return produtoRepository.findAll();
+    public List<ProdutoDto> produto() {
+        return produtoRepository.findAll()
+                .stream()
+                .map(produtoMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Produto produtoPorId(@NotNull @Positive Long id) {
-        return produtoRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+    public ProdutoDto produtoPorId(@NotNull @Positive Long id) {
+        return produtoRepository.findById(id).map(produtoMapper::toDTO)
+                .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public Produto criarProduto(@Valid Produto produto) {
-        return produtoRepository.save(produto);
+    public ProdutoDto criarProduto(@Valid ProdutoDto produto) {
+        return produtoMapper.toDTO(produtoRepository.save(produtoMapper.toEntity(produto)));
     }
 
-    public Produto atualizaProduto(@NotNull @Positive Long id, Produto produto) {
+    public ProdutoDto atualizaProduto(@NotNull @Positive Long id,@Valid @NotNull ProdutoDto produto) {
         return produtoRepository.findById(id)
                 .map(data -> {
-                    data.setNome(produto.getNome());
-                    data.setDescricao(produto.getDescricao());
-                    data.setCategoriaId(produto.getCategoriaId());
-                    return produtoRepository.save(data);
+                    data.setNome(produto.Nome());
+                    data.setDescricao(produto.Descricao());
+                    data.setCategoriaId(produto.CategoriaId());
+                    return produtoMapper.toDTO(produtoRepository.save(data));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 

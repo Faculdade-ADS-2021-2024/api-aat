@@ -1,12 +1,14 @@
 package com.aatorganicos.aatorganicos.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.aatorganicos.aatorganicos.dto.CategoriaDto;
+import com.aatorganicos.aatorganicos.dto.mapper.CategoraMapper;
 import com.aatorganicos.aatorganicos.exception.RecordNotFoundException;
-import com.aatorganicos.aatorganicos.model.Categoria;
 import com.aatorganicos.aatorganicos.repository.ICategoriaRepository;
 
 import jakarta.validation.Valid;
@@ -18,34 +20,39 @@ import jakarta.validation.constraints.Positive;
 public class CategoriaService {
 
     private final ICategoriaRepository categoriaRepository;
+    private final CategoraMapper categoriaMapper;
 
-    public CategoriaService(ICategoriaRepository categoriaRepository) {
+    public CategoriaService(ICategoriaRepository categoriaRepository, CategoraMapper categoriaMapper) {
         this.categoriaRepository = categoriaRepository;
+        this.categoriaMapper = categoriaMapper;
     }
 
-    public List<Categoria> categoria() {
-        return categoriaRepository.findAll();
+    public List<CategoriaDto> categoria() {
+        return categoriaRepository.findAll()
+                .stream()
+                .map(categoriaMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Categoria categoriaPorId(@NotNull @Positive Long id) {
-        return categoriaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+    public CategoriaDto categoriaPorId(@NotNull @Positive Long id) {
+        return categoriaRepository.findById(id).map(categoriaMapper::toDTO)
+                .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public Categoria criarCategoria(@Valid Categoria categoria) {
-        return categoriaRepository.save(categoria);    
-    }
+    public CategoriaDto criarCategoria(@Valid CategoriaDto categoria) {
+        return categoriaMapper.toDTO(categoriaRepository.save(categoriaMapper.toEntity(categoria)));
+    };    
 
-    public Categoria atualizaCategoria(@NotNull @Positive Long id, Categoria categoria) {
+    public CategoriaDto atualizaCategoria(@NotNull @Positive Long id,@Valid @NotNull CategoriaDto categoria) {
         return categoriaRepository.findById(id)
                 .map(data -> {
-                    data.setNome(categoria.getNome());
-                    data.setDescricao(categoria.getDescricao());
-                    return categoriaRepository.save(data);
+                    data.setNome(categoria.Nome());
+                    data.setDescricao(categoria.Descricao());
+                    return categoriaMapper.toDTO(categoriaRepository.save(data));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     public void deleteCategoria(@NotNull @Positive Long id) {
-
         categoriaRepository.delete(categoriaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
     }
 

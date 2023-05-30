@@ -20,7 +20,7 @@ public class Endereco {
     @NotBlank
     @NotNull
     @Column(length = 10, nullable = false)
-    private Long Cep;
+    private String Cep;
 
     @Column(length = 120, nullable = true)
     private String Logradouro;

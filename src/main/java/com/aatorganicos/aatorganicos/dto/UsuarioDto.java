@@ -6,7 +6,5 @@ import jakarta.validation.constraints.NotNull;
 public record UsuarioDto(
         Long Id,
         @NotNull @NotBlank String Login,
-        @NotNull @NotBlank String Senha,
-        @NotNull @NotBlank String Status) {
-
-}
+        @NotNull @NotBlank String Senha
+        ) {}

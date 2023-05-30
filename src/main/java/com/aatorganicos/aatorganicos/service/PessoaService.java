@@ -1,12 +1,14 @@
 package com.aatorganicos.aatorganicos.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.aatorganicos.aatorganicos.dto.PessoaDto;
+import com.aatorganicos.aatorganicos.dto.mapper.PessoaMapper;
 import com.aatorganicos.aatorganicos.exception.RecordNotFoundException;
-import com.aatorganicos.aatorganicos.model.Pessoa;
 import com.aatorganicos.aatorganicos.repository.IPessoaRepository;
 
 import jakarta.validation.Valid;
@@ -18,32 +20,38 @@ import jakarta.validation.constraints.Positive;
 public class PessoaService {
 
     private final IPessoaRepository pessoaRepository;
+    private final PessoaMapper pessoaMapper;
 
-    public PessoaService(IPessoaRepository pessoaRepository) {
+    public PessoaService(IPessoaRepository pessoaRepository, PessoaMapper pessoaMapper) {
         this.pessoaRepository = pessoaRepository;
+        this.pessoaMapper = pessoaMapper;
+    } 
+
+    public List<PessoaDto> pessoa() {
+        return pessoaRepository.findAll()
+                .stream()
+                .map(pessoaMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<Pessoa> pessoa() {
-        return pessoaRepository.findAll();
+    public PessoaDto pessoaPorId(@NotNull @Positive Long id) {
+        return pessoaRepository.findById(id).map(pessoaMapper::toDTO)
+                .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public Pessoa pessoaPorId(@NotNull @Positive Long id) {
-        return pessoaRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
+    public PessoaDto criarPessoa(@Valid PessoaDto pessoa) {
+        return pessoaMapper.toDTO(pessoaRepository.save(pessoaMapper.toEntity(pessoa)));
     }
 
-    public Pessoa criarPessoa(@Valid Pessoa pessoa) {
-        return pessoaRepository.save(pessoa);
-    }
-
-    public Pessoa atualizaPessoa(@NotNull @Positive Long id, Pessoa pessoa) {
+    public PessoaDto atualizaPessoa(@NotNull @Positive Long id, PessoaDto pessoa) {
         return pessoaRepository.findById(id)
                 .map(data -> {
-                    data.setCpf(pessoa.getCpf());
-                    data.setDtNascimento(pessoa.getDtNascimento());
-                    data.setEmail(pessoa.getEmail());
-                    data.setNome(pessoa.getNome());
-                    data.setSexo(pessoa.getSexo());
-                    return pessoaRepository.save(data);
+                    data.setCPF(pessoa.CPF());
+                    data.setDtNascimento(pessoa.DtNascimento());
+                    data.setEmail(pessoa.Email());
+                    data.setNome(pessoa.Nome());
+                    data.setSexo(pessoa.sexo());
+                    return pessoaMapper.toDTO(pessoaRepository.save(data));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
