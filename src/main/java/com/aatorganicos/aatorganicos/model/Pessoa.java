@@ -44,7 +44,7 @@ public class Pessoa {
     @NotNull
     @Column(length = 1, nullable = true)
     @Convert(converter = SexoConverter.class)
-    private Sexo sexo;
+    private Sexo Sexo;
 
     @Length(max = 15)
     @Column(length = 15, nullable = true)

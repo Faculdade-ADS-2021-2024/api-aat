@@ -50,7 +50,7 @@ public class PessoaService {
                     data.setDtNascimento(pessoa.DtNascimento());
                     data.setEmail(pessoa.Email());
                     data.setNome(pessoa.Nome());
-                    data.setSexo(pessoa.sexo());
+                    data.setSexo(pessoaMapper.convertSexoValue(pessoa.Sexo()));
                     return pessoaMapper.toDTO(pessoaRepository.save(data));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }

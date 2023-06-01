@@ -14,7 +14,7 @@ public class PessoaMapper {
             return null;
         }
         
-        return new PessoaDto(pessoa.getId(), pessoa.getNome(), pessoa.getEmail(), pessoa.getDtNascimento(), pessoa.getSexo(), pessoa.getCPF());
+        return new PessoaDto(pessoa.getId(), pessoa.getNome(), pessoa.getEmail(), pessoa.getDtNascimento(), pessoa.getSexo().getValue(), pessoa.getCPF());
     }
 
     public Pessoa toEntity(PessoaDto pessoaDto) {
@@ -27,13 +27,27 @@ public class PessoaMapper {
         if(pessoaDto.Id() != null) {
             pessoa.setId(pessoaDto.Id());
         }
+
         pessoa.setNome(pessoaDto.Nome());
         pessoa.setEmail(pessoaDto.Email());
         pessoa.setDtNascimento(pessoaDto.DtNascimento());
-        pessoa.setSexo(Sexo.MASCULINO);
+        pessoa.setSexo(convertSexoValue(pessoaDto.Sexo()));
         pessoa.setCPF(pessoaDto.CPF());
 
         return pessoa;
+    }
+
+    public Sexo convertSexoValue(String value) {
+        if(value == null) {
+            return null;
+        }
+        
+        return switch (value) {
+            case "M" -> Sexo.MASCULINO;
+            case "F" -> Sexo.FEMININO;
+            case "O" -> Sexo.OUTROS;
+            default  -> throw new IllegalArgumentException("Valor de sexo inválido");
+        };
     }
     
 }
