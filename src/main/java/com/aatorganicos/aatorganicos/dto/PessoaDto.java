@@ -11,6 +11,7 @@ public record PessoaDto(
         @NotNull @NotBlank String Email,
         @NotNull @NotBlank LocalDate DtNascimento,
         @NotNull @NotBlank String Sexo,
-        @NotNull @NotBlank Number CPF) {
+        @NotNull @NotBlank Number CPF
+        ) {
 
 }

@@ -13,7 +13,7 @@ public class ProdutoMapper {
             return null;
         }
 
-        return new ProdutoDto(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getCategoriaId());
+        return new ProdutoDto(produto.getId(), produto.getNome(), produto.getDescricao());
     }
 
     public Produto toEntity(ProdutoDto produtoDto) {
@@ -29,7 +29,6 @@ public class ProdutoMapper {
 
         produto.setNome(produtoDto.Nome());
         produto.setDescricao(produtoDto.Descricao());
-        produto.setCategoriaId(produtoDto.CategoriaId());
 
         return produto;
     }

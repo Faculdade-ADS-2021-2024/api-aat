@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.aatorganicos.aatorganicos.model.Categoria;
+import com.aatorganicos.aatorganicos.model.Produto;
 import com.aatorganicos.aatorganicos.repository.ICategoriaRepository;
 
 @SpringBootApplication
@@ -24,6 +25,12 @@ public class AatOrganicosApplication {
 			
 			c.setNome("Teste");
 			c.setDescricao("Teste descrição");
+
+			Produto p = new Produto();
+			p.setNome("Produto Teste");
+			p.setDescricao("Produto Teste descrição");
+			p.setCategoria(c);
+			c.getProdutos().add(p);
 
 			categoriaRepository.save(c);
 		};

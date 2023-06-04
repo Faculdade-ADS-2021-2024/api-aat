@@ -48,7 +48,6 @@ public class ProdutoService {
                 .map(data -> {
                     data.setNome(produto.Nome());
                     data.setDescricao(produto.Descricao());
-                    data.setCategoriaId(produto.CategoriaId());
                     return produtoMapper.toDTO(produtoRepository.save(data));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }

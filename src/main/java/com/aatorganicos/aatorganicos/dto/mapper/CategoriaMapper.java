@@ -6,14 +6,14 @@ import com.aatorganicos.aatorganicos.dto.CategoriaDto;
 import com.aatorganicos.aatorganicos.model.Categoria;
 
 @Component
-public class CategoraMapper {
+public class CategoriaMapper {
     
     public CategoriaDto toDTO(Categoria categoria) {
         if(categoria == null) {
             return null;            
         }
 
-        return new CategoriaDto(categoria.getId(), categoria.getNome(), categoria.getDescricao());
+        return new CategoriaDto(categoria.getId(), categoria.getNome(), categoria.getDescricao(), categoria.getProdutos());
     }
 
     public Categoria toEntity(CategoriaDto categoriaDto) {

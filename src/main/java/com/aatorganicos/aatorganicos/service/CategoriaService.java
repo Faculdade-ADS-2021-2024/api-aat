@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.aatorganicos.aatorganicos.dto.CategoriaDto;
-import com.aatorganicos.aatorganicos.dto.mapper.CategoraMapper;
+import com.aatorganicos.aatorganicos.dto.mapper.CategoriaMapper;
 import com.aatorganicos.aatorganicos.exception.RecordNotFoundException;
 import com.aatorganicos.aatorganicos.repository.ICategoriaRepository;
 
@@ -20,9 +20,9 @@ import jakarta.validation.constraints.Positive;
 public class CategoriaService {
 
     private final ICategoriaRepository categoriaRepository;
-    private final CategoraMapper categoriaMapper;
+    private final CategoriaMapper categoriaMapper;
 
-    public CategoriaService(ICategoriaRepository categoriaRepository, CategoraMapper categoriaMapper) {
+    public CategoriaService(ICategoriaRepository categoriaRepository, CategoriaMapper categoriaMapper) {
         this.categoriaRepository = categoriaRepository;
         this.categoriaMapper = categoriaMapper;
     }
@@ -41,7 +41,7 @@ public class CategoriaService {
 
     public CategoriaDto criarCategoria(@Valid CategoriaDto categoria) {
         return categoriaMapper.toDTO(categoriaRepository.save(categoriaMapper.toEntity(categoria)));
-    };    
+    }    
 
     public CategoriaDto atualizaCategoria(@NotNull @Positive Long id,@Valid @NotNull CategoriaDto categoria) {
         return categoriaRepository.findById(id)
