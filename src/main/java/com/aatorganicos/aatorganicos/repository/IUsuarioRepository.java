@@ -6,4 +6,6 @@ import com.aatorganicos.aatorganicos.model.Usuario;
 
 public interface IUsuarioRepository extends JpaRepository<Usuario, Long>{
     
+    Usuario findByLogin(String login);
+
 }
